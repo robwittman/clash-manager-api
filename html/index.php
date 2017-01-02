@@ -20,6 +20,7 @@ use Clash\Helper\JsonHelper;
 
 $app->add(new \Slim\Middleware\JwtAuthentication(array(
     'secret' => getenv("JWT_SECRET"),
+    'secure' => false,
     'path' => array(
         "/clan",
         "/members",
