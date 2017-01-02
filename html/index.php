@@ -30,7 +30,6 @@ $app->add(new \Slim\Middleware\JwtAuthentication(array(
         '/auth/token'
     ),
     'algorithm' => array('HS256'),
-    'secure' => (SLIM_ENV == 'production' ? true : false),
     'error' => function ($request, $response, $arguments) {
         return JsonHelper::respondWithError($response, "Invalid authentication", 401);
     },
