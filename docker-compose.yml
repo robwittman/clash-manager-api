@@ -1,0 +1,35 @@
+version: "2"
+services:
+    web:
+        build: .
+        ports:
+            - 80:80
+        links:
+            - postgres
+            - redis
+        volumes:
+            - ./:/var/www/
+            # - ./html/.user.ini:/usr/local/etc/php/php.ini
+            # - ./logs/output.log:/output.log
+        environment:
+            REDISCLOUD_URL: tcp://redis:6379
+            DATABASE_URL: postgres://postgres:password@postgres/clash
+            ENV: dev
+            JWT_SECRET: secretkey
+            CLASH_API_KEY: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImI4ZDVlYmE2LWE1MmYtNDliMy04ZGRiLTEzMDIxN2E5MzA3MiIsImlhdCI6MTQ4MzEzMjUzNywic3ViIjoiZGV2ZWxvcGVyL2IzNTMwMDRlLTU5ZTQtNmRhYy05OTcwLWZjYzc4ZmI5MzZiMyIsInNjb3BlcyI6WyJjbGFzaCJdLCJsaW1pdHMiOlt7InRpZXIiOiJkZXZlbG9wZXIvc2lsdmVyIiwidHlwZSI6InRocm90dGxpbmcifSx7ImNpZHJzIjpbIjY4LjkuMzkuOTUiXSwidHlwZSI6ImNsaWVudCJ9XX0._l8Fc0tHGc0tmBuk898PGlnyick1MJc9-ESEbg0_qAZl3-nCy8xB07V0Qz5Wn-wPoM9Fc270oKCNfqDBpbScHg
+    redis:
+        image: redis
+        volumes:
+            - ./data/redis:/data
+        ports:
+            - 6379:6379
+    postgres:
+        image: postgres
+        volumes:
+            - ./data/postgres:/var/lib/postgres
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: password
+            POSTGRES_USER: postgres
+            POSTGRES_DB: clash
